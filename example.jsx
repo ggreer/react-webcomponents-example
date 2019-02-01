@@ -284,10 +284,10 @@ ReactDOM.render(<React.Fragment>
   </p>
   <ul>
     <li>React is declarative, while Web Components tend to have many imperative interfaces. (eg: <code>&lt;Modal open={'{'}true{'}'}&gt;</code> vs <code>modal.open()</code>)</li>
-    <li>React is not designed for two way data binding.</li>
-    <li>React properties can be any sort of data (arrays, objects, strings, functions, other React components), while web component attributes must be strings and slots must be DOM nodes.</li>
-    <li>React normalizes events to have a consistent interface across browsers and exposes them as callbacks. This convenience isn&apos;t possible for custom events.</li>
-    <li>Native inputs have a huge interface that both our wrapper and web component would need to duplicate.</li>
+    <li>React is designed for one way data binding. Data is passed from parent components to child components. Web Components have their own state which must be synced back up into React-land. Doing this correctly is very difficult.</li>
+    <li>React properties can be any sort of data: arrays, objects, strings, functions, other React components. Web component attributes must be strings and their slots must be DOM nodes. Wrapped Web Components will always be second class citizens.</li>
+    <li>React normalizes events to have a consistent interface and exposes them as callbacks. This convenience isn&apos;t possible for custom events.</li>
+    <li>Native inputs have a huge interface of properties and methods that both our wrappers and web components would need to duplicate.</li>
   </ul>
   <p>
     Specific instances of these problems are demonstrated below.
