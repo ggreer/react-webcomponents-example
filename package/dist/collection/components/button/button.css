@@ -1,0 +1,104 @@
+/**
+ * Retrieves map keys from nested maps.
+ */
+/**
+ * Retrieves color variants from variation map.
+ * color: cv(action, light); // color: #96bafa;
+ */
+@font-face {
+  font-family: 'Proxima Nova';
+  font-style: normal;
+  font-weight: 300;
+  src: url("/font/ProximaNova-Light.woff2") format("woff2"), url("/font/ProximaNova-Light.woff") format("woff"); }
+
+@font-face {
+  font-family: 'Proxima Nova';
+  font-style: normal;
+  font-weight: normal;
+  src: url("/font/ProximaNova-Regular.woff2") format("woff2"), url("/font/ProximaNova-Regular.woff") format("woff"); }
+
+@font-face {
+  font-family: 'Proxima Nova';
+  font-style: normal;
+  font-weight: 600;
+  src: url("/font/ProximaNova-Semibold.woff2") format("woff2"), url("/font/ProximaNova-Semibold.woff") format("woff"); }
+
+o-button {
+  /* stylelint-disable-next-line no-descending-specificity */ }
+  o-button .button {
+    display: inline-block;
+    position: relative;
+    margin: 0;
+    padding: 0.75em 1.875em;
+    transition-property: color, background-color, border-color, transform;
+    transition-duration: 250ms;
+    transition-timing-function: ease-in-out;
+    border: 1px solid transparent;
+    border-radius: 3px;
+    background-color: #1662dd;
+    color: #ffffff;
+    font-family: "Proxima Nova", "-apple-system", "BlinkMacSystemFont", "Segoe UI", "Roboto", "Oxygen-Sans", "Ubuntu", "Cantarell", "Helvetica Neue", sans-serif;
+    font-size: 1rem;
+    font-weight: 600;
+    line-height: 1; }
+    o-button .button:hover, o-button .button.is-button-hover {
+      border-color: #124a94;
+      background-color: #124a94; }
+    o-button .button:active {
+      transform: scale(0.95); }
+    o-button .button:focus, o-button .button.is-button-focus {
+      outline: 0; }
+      o-button .button:focus::before, o-button .button.is-button-focus::before {
+        content: '';
+        display: block;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: calc(100% + 0.75em);
+        height: calc(100% + 0.75em);
+        transform: translate(-50%, -50%);
+        border: 2px dotted #5c6971;
+        border-radius: calc(0.375em + 3px - 2px); }
+    o-button .button:disabled {
+      border-color: transparent;
+      background-color: #b7bcc0;
+      pointer-events: none; }
+  o-button .is-button-secondary {
+    border-color: #1662dd;
+    background-color: #ffffff;
+    color: #1662dd; }
+    o-button .is-button-secondary:hover, o-button .is-button-secondary.is-button-hover {
+      border-color: #124a94;
+      background-color: #ffffff;
+      color: #124a94; }
+    o-button .is-button-secondary:disabled {
+      border-color: #b7bcc0;
+      background-color: #ffffff;
+      color: #b7bcc0; }
+  o-button .is-button-danger {
+    background-color: #dd0744; }
+    o-button .is-button-danger:hover, o-button .is-button-danger.is-button-hover {
+      border-color: #b80047;
+      background-color: #b80047; }
+    o-button .is-button-danger.is-button-secondary {
+      border-color: #dd0744;
+      background-color: #ffffff;
+      color: #dd0744; }
+      o-button .is-button-danger.is-button-secondary:hover, o-button .is-button-danger.is-button-secondary.is-button-hover {
+        border-color: #b80047;
+        background-color: #ffffff;
+        color: #b80047; }
+      o-button .is-button-danger.is-button-secondary:disabled {
+        border-color: #b7bcc0;
+        background-color: #ffffff;
+        color: #b7bcc0; }
+  o-button .form--header .button {
+    font-size: 0.76557rem; }
+  o-button .button + o-button .button,
+  o-button o-button + o-button .button, o-button .button +
+  o-button o-button,
+  o-button o-button +
+  o-button o-button {
+    margin-left: 0.75em; }
+  .form:not([data-readonly]) o-button .form--header .button {
+    display: none; }

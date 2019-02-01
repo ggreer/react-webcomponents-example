@@ -1,0 +1,64 @@
+/**
+ * Retrieves map keys from nested maps.
+ */
+/**
+ * Retrieves color variants from variation map.
+ * color: cv(action, light); // color: #96bafa;
+ */
+@font-face {
+  font-family: 'Proxima Nova';
+  font-style: normal;
+  font-weight: 300;
+  src: url("/font/ProximaNova-Light.woff2") format("woff2"), url("/font/ProximaNova-Light.woff") format("woff"); }
+
+@font-face {
+  font-family: 'Proxima Nova';
+  font-style: normal;
+  font-weight: normal;
+  src: url("/font/ProximaNova-Regular.woff2") format("woff2"), url("/font/ProximaNova-Regular.woff") format("woff"); }
+
+@font-face {
+  font-family: 'Proxima Nova';
+  font-style: normal;
+  font-weight: 600;
+  src: url("/font/ProximaNova-Semibold.woff2") format("woff2"), url("/font/ProximaNova-Semibold.woff") format("woff"); }
+
+.text-input {
+  display: block;
+  position: relative;
+  width: 100%;
+  max-width: 50ch;
+  margin: 0;
+  padding: 0.75rem;
+  transition-property: border-color, background-color;
+  transition-duration: 250ms;
+  transition-timing-function: ease-in-out;
+  border: 1px solid #b7bcc0;
+  border-radius: 3px;
+  background-color: #ffffff;
+  box-shadow: none;
+  color: #5c6971;
+  font-family: "Proxima Nova", "-apple-system", "BlinkMacSystemFont", "Segoe UI", "Roboto", "Oxygen-Sans", "Ubuntu", "Cantarell", "Helvetica Neue", sans-serif;
+  font-size: 1rem;
+  line-height: 1.25; }
+  .text-input:hover, .text-input:focus {
+    border-color: #1662dd; }
+  .text-input:disabled {
+    opacity: 0.5;
+    pointer-events: none; }
+  .text-input[readonly] {
+    padding-top: 0;
+    padding-right: 0;
+    padding-left: 0;
+    border: 0;
+    background-color: transparent; }
+  .text-input[data-invalid] {
+    border-color: #dd0744;
+    background-color: #fee6ea; }
+  .text-input::placeholder {
+    color: #899298; }
+
+.text-area {
+  min-width: 1.5rem;
+  max-width: 50ch;
+  min-height: 3rem; }

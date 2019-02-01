@@ -1,0 +1,218 @@
+{
+  "components": [
+    {
+      "tag": "o-button",
+      "dependencies": [],
+      "componentClass": "Button",
+      "componentPath": "components/button/button.js",
+      "styles": {
+        "$": {
+          "stylePaths": [
+            "components/button/button.scss"
+          ]
+        }
+      },
+      "props": [
+        {
+          "name": "disabled",
+          "type": "Boolean",
+          "attr": "disabled"
+        },
+        {
+          "name": "href",
+          "type": "String",
+          "attr": "href"
+        },
+        {
+          "name": "icon",
+          "type": "String",
+          "attr": "icon"
+        },
+        {
+          "name": "type",
+          "type": "String",
+          "attr": "type"
+        }
+      ],
+      "hostElement": {
+        "name": "el"
+      }
+    },
+    {
+      "tag": "o-form",
+      "dependencies": [
+        "o-button"
+      ],
+      "componentClass": "Form",
+      "componentPath": "components/form/form.js",
+      "styles": {
+        "$": {
+          "stylePaths": [
+            "components/form/form.scss"
+          ]
+        }
+      },
+      "props": [
+        {
+          "name": "formTitle",
+          "type": "String",
+          "attr": "form-title"
+        },
+        {
+          "name": "read",
+          "type": "Boolean",
+          "attr": "read"
+        },
+        {
+          "name": "submit",
+          "type": "String",
+          "attr": "submit"
+        }
+      ],
+      "events": [
+        {
+          "event": "oEdit"
+        },
+        {
+          "event": "oSave"
+        }
+      ]
+    },
+    {
+      "tag": "o-input-wrapper",
+      "dependencies": [],
+      "componentClass": "InputWrapper",
+      "componentPath": "components/input-wrapper/input-wrapper.js",
+      "styles": {
+        "$": {
+          "stylePaths": [
+            "components/input-wrapper/input-wrapper.scss"
+          ]
+        }
+      },
+      "props": [
+        {
+          "name": "explain",
+          "type": "String",
+          "attr": "explain"
+        },
+        {
+          "name": "label",
+          "type": "String",
+          "attr": "label"
+        }
+      ]
+    },
+    {
+      "tag": "o-modal",
+      "dependencies": [],
+      "componentClass": "Modal",
+      "componentPath": "components/modal/modal.js",
+      "styles": {
+        "$": {
+          "stylePaths": [
+            "components/modal/modal.scss"
+          ]
+        }
+      },
+      "props": [
+        {
+          "name": "modalTitle",
+          "type": "String",
+          "attr": "modal-title"
+        },
+        {
+          "name": "open",
+          "type": "Boolean",
+          "attr": "open"
+        },
+        {
+          "name": "type",
+          "type": "String",
+          "attr": "type"
+        }
+      ],
+      "methods": [
+        {
+          "name": "close"
+        },
+        {
+          "name": "show"
+        }
+      ],
+      "hostElement": {
+        "name": "el"
+      },
+      "events": [
+        {
+          "event": "oClose"
+        }
+      ]
+    },
+    {
+      "tag": "o-text-input",
+      "dependencies": [
+        "o-input-wrapper"
+      ],
+      "componentClass": "TextInput",
+      "componentPath": "components/text-input/text-input.js",
+      "styles": {
+        "$": {
+          "stylePaths": [
+            "components/text-input/text-input.scss"
+          ]
+        }
+      },
+      "props": [
+        {
+          "name": "disabled",
+          "type": "Boolean",
+          "attr": "disabled"
+        },
+        {
+          "name": "explain",
+          "type": "String",
+          "attr": "explain"
+        },
+        {
+          "name": "label",
+          "type": "String",
+          "attr": "label"
+        },
+        {
+          "name": "name",
+          "type": "String",
+          "attr": "name"
+        },
+        {
+          "name": "placeholder",
+          "type": "String",
+          "attr": "placeholder"
+        },
+        {
+          "name": "readonly",
+          "type": "Boolean",
+          "attr": "readonly"
+        },
+        {
+          "name": "value",
+          "type": "String",
+          "mutable": true,
+          "attr": "value"
+        }
+      ],
+      "events": [
+        {
+          "event": "oChange"
+        }
+      ]
+    }
+  ],
+  "collections": [],
+  "compiler": {
+    "name": "@stencil/core",
+    "version": "0.15.2",
+    "typescriptVersion": "2.9.2"
+  },
+  "bundles": []
+}
