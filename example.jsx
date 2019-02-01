@@ -84,7 +84,7 @@ class Refs extends React.Component {
       </p>
       <p>
         It is probably possible to fix this bug in the wrapper, but it was the 3rd or 4th race condition we ran into after a few hours of combined effort.
-        The React equivalent of <code>o-input</code> took us about a minute to write.
+        The React equivalent of <code>o-text-input</code> took us about a minute to write.
       </p>
       <FieldSet label="Native Input:" aside="Can be changed by user. Always up to date.">
         <input className="text-input" name="native" type="text" value={value} onChange={this.setValue} ref={this.ref} />
@@ -92,9 +92,9 @@ class Refs extends React.Component {
       value from input ref: { this.ref.current && this.ref.current.value }
       <br/>
       <br/>
-      <OTextInput label="o-input wrapper" name="wc1" value={oValue} onChange={this.setOValue} ref={this.oRef} />
+      <OTextInput label="o-text-input wrapper" name="wc1" value={oValue} onChange={this.setOValue} ref={this.oRef} />
       <br/>
-      value from o-input ref: { this.oRef.current && this.oRef.current.value }
+      value from o-text-input ref: { this.oRef.current && this.oRef.current.value }
     </form>;
   }
 }
@@ -120,7 +120,7 @@ class ControlledInput extends React.Component {
       <Title id="events">Events</Title>
       <p>
         Most events bubble up from the actual input because our Web Components aren&apos;t using the shadow DOM.
-        One exception is <code>o-input</code>&apos;s <code>oChange</code> event, which is emitted instead of the native <code>input</code> event.
+        One exception is <code>o-text-input</code>&apos;s <code>oChange</code> event, which is emitted instead of the native <code>input</code> event.
       </p>
 
       From React&apos;s <a href="https://reactjs.org/docs/events.html">SyntheticEvent docs</a>:
@@ -131,7 +131,7 @@ class ControlledInput extends React.Component {
       </blockquote>
 
       <p>
-        The React <code>o-input</code> wrapper must manually bind to <code>oChange</code> using <code>addEventListener()</code>.
+        The React <code>o-text-input</code> wrapper must manually bind to <code>oChange</code> using <code>addEventListener()</code>.
         This bypasses React&apos;s event normalization.
       </p>
       <p>
@@ -147,7 +147,7 @@ class ControlledInput extends React.Component {
       <FieldSet label="Controlled Input:">
         <input className="text-input" name="native" type="text" value={value} onChange={this.setValue} />
       </FieldSet>
-      <OTextInput label="(Controlled) o-input" name="wc1" value={value} onChange={this.setValue} />
+      <OTextInput label="(Controlled) o-text-input" name="wc1" value={value} onChange={this.setValue} />
       <p>
         Keys from change event:
         { eventKeys && <br/> }
@@ -170,8 +170,8 @@ class Events extends React.Component {
     return <form className="form">
       <Title id="interfaces">Interfaces</Title>
       <p>
-        Custom events emitted by Web Components change the event&apos;s target from the actual emitter (<code>input</code>) to the web component (<code>o-input</code>).
-        &nbsp;<code>o-input</code> is currently missing most of the native input&apos;s <a href="https://developer.mozilla.org/en-US/docs/Web/API/HTMLInputElement#properties">methods and properties</a>:
+        Custom events emitted by Web Components change the event&apos;s target from the actual emitter (<code>input</code>) to the web component (<code>o-text-input</code>).
+        &nbsp;<code>o-text-input</code> is currently missing most of the native input&apos;s <a href="https://developer.mozilla.org/en-US/docs/Web/API/HTMLInputElement#properties">methods and properties</a>:
       </p>
       <code>
         blur()
@@ -267,7 +267,7 @@ const Styles = () => <form className="form">
     Even something trivial in React (like passing a list of strings to a component) becomes hard.
   </p>
   <p>
-    Because React <code>style</code> and <code>className</code> props are applied directly to the <code>o-input</code>, there is no clean way to customize <code>o-input</code>&apos;s <code>label</code>.
+    Because React <code>style</code> and <code>className</code> props are applied directly to the <code>o-text-input</code>, there is no clean way to customize <code>o-text-input</code>&apos;s <code>label</code>.
     These sorts of one-off problems inevitably turn into bikesheds and generate Frankenstein interfaces because universal (Web) Components must satisfy all product requirements from all the products that use them.
   </p>
   <FieldSet className="fieldset"
@@ -280,7 +280,7 @@ const Styles = () => <form className="form">
 ReactDOM.render(<React.Fragment>
   <h1 className="form--title">React and Web Components</h1>
   <p>
-    This page contains some examples of using the o-input web component in React and the issues that arise. General problems are:
+    This page contains some examples of using the o-text-input web component in React and the issues that arise. General problems are:
   </p>
   <ul>
     <li>React is declarative, while Web Components are imperative.</li>
