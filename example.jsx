@@ -283,7 +283,7 @@ ReactDOM.render(<React.Fragment>
     This page contains some examples of using the o-text-input web component in React and the issues that arise. General problems are:
   </p>
   <ul>
-    <li>React is declarative, while Web Components are imperative.</li>
+    <li>React is declarative, while Web Components tend to have many imperative interfaces. (eg: <code>&lt;Modal open={'{'}true{'}'}&gt;</code> vs <code>modal.open()</code>)</li>
     <li>React is not designed for two way data binding.</li>
     <li>React properties can be any sort of data (arrays, objects, strings, functions, other React components), while web component attributes must be strings and slots must be DOM nodes.</li>
     <li>React normalizes events to have a consistent interface across browsers and exposes them as callbacks. This convenience isn&apos;t possible for custom events.</li>
