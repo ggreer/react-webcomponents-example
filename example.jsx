@@ -1,4 +1,4 @@
-/* global React: false, ReactDOM: false, Redux: false, ReactRedux: false */
+/* global React: false, ReactDOM: false */
 
 class OTextInput extends React.Component {
   constructor (props) {
@@ -72,7 +72,7 @@ class Refs extends React.Component {
         <br/>
         <br/>
         Here, we control the input directly and ask the wrapper what it thinks the value is by way of a <code>ref</code>.
-        The ref's <code>value</code> attribute and our <code>value</code> from our internal state race because of the two way data binding of <code>value</code>.
+        The ref&rsquo;s <code>value</code> attribute and our <code>value</code> from our internal state race because of the two way data binding of <code>value</code>.
       </p>
       <p>
         It is probably possible to fix this bug in the wrapper, but it was the 3rd or 4th race we ran into.
@@ -102,11 +102,11 @@ class ControlledInput extends React.Component {
       });
     };
     this.setValue = e => {
-      this.setState({ 
+      this.setState({
         changedBy: e.target.name,
         value: e.target.value,
       });
-    }
+    };
   }
 
   render () {
@@ -119,7 +119,7 @@ class ControlledInput extends React.Component {
       </p>
 
       <blockquote>
-        Your event handlers will be passed instances of SyntheticEvent, a cross-browser wrapper around the browser’s native event. 
+        Your event handlers will be passed instances of SyntheticEvent, a cross-browser wrapper around the browser’s native event.
         It has the same interface as the browser’s native event, including stopPropagation() and preventDefault(), except the events work identically across all browsers.
         ...React normalizes events so that they have consistent properties across different browsers.
       </blockquote>
@@ -158,7 +158,7 @@ class Events extends React.Component {
     return <form className="form">
       <h1 className="form--title">Events</h1>
       <p>
-        Most events bubble up from the actual input because we aren't using the shadow dom.
+        Most events bubble up from the actual input because we aren&rsquo;t using the shadow dom.
         However, the <code>onChange</code> handler in the wrapper must be bound to the <code>oChange</code> custom event which targets the o-input, (not the actual input).
         o-input is currently missing most <a href="https://developer.mozilla.org/en-US/docs/Web/API/HTMLInputElement#properties">methods and properties</a> that inputs have:
       </p>
@@ -176,30 +176,30 @@ class Events extends React.Component {
       <p>
         Of the ones that do mysteriously work, its not at all clear why since operating on o-input is not the same as operating on input.
         Besides the ones listed above, there are input specific methods and several vendor specific methods/properties potentially used by libraries.
-        The list of <i>common</i> properties that must be supported on both sides is large, too:
+        The list of <i>common</i> properties that must be supported on both sides is large:
       </p>
       <code>
-        name
-        type
-        disabled
-        autofocus
-        required
-        value
-        validity
-        validationMessage
-        willValidate
-        autocomplete
-        max
-        maxLength
-        min
-        minLength
-        pattern
-        placeholder
-        readOnly
-        selectionStart
-        selectionEnd
-        selectionDirection
-        size
+        name,
+        type,
+        disabled,
+        autofocus,
+        required,
+        value,
+        validity,
+        validationMessage,
+        willValidate,
+        autocomplete,
+        max,
+        maxLength,
+        min,
+        minLength,
+        pattern,
+        placeholder,
+        readOnly,
+        selectionStart,
+        selectionEnd,
+        selectionDirection,
+        size,
         tabindex
       </code>
       <br/>
@@ -219,10 +219,9 @@ class Events extends React.Component {
         onClick={e => console.log('WC onClick', e.target)}
         onChange={e => console.log('onChange', e.target)}
         label="Web Component has no `focus` method"
-       >
+      >
         <button type="button" onClick={() => this.oInput.focus()}>focus WC</button>
       </OTextInput>
-       
     </form>;
   }
 }
@@ -231,43 +230,37 @@ const Styles = () => <form className="form">
   <h1 className="form--title">Idiomatic Code, Composition, and Customization</h1>
   <p>
     Web Components may only accept string attributes (props) because thats the limition of the DOM.
-    React Components can receive any type of data because they only exist in React's virtual DOM.
+    React Components can receive any type of data because they only exist in React&rsquo;s virtual DOM.
     In this case, the <code>label</code> is actually the short snippet:
   </p>
-<pre>
-{`const label = <code>
+  <pre>{`const label = <code>
   <img src="fa-triangle.png" style={{ width: 18, height: 18 }} /> 
   http://...
 </code>
 ...
-<FieldSet label={label} ... />
-`}
-</pre>
+<FieldSet label={label} ... />`}</pre>
   <p>
-    This is a common pattern in React, which strongly prefers Composition over other abstractions. 
+    This is a common pattern in React, which strongly prefers Composition over other abstractions.
     Components themselves can (and commonly are) passed as arguments to other Components like so:
   </p>
 
-<pre>
-{`const CustomLabel = (props) => <code style={props.style}>
+  <pre>{`const CustomLabel = (props) => <code style={props.style}>
   <img src="fa-triangle.png" style={{ width: 18, height: 18 }} /> 
   http://...
 </code>
 ...
-<FieldSet label={CustomLabel} ... />
-`}
-</pre>
+<FieldSet label={CustomLabel} ... />`}</pre>
   <p>
     This sort of idiomatic interface (Higher Order Components et al) is not even possible with slots, because Web Components can not operate on React Components, only the DOM nodes they render.
     Even something trivial in React like passing a list of strings to a component becomes hard.
   </p>
   <p>
-    Because React <code>style</code> and <code>className</code> attributes are applied directly to the <code>o-input</code>, there is no clean way to customize <code>o-input</code>'s <code>label</code>.
+    Because React <code>style</code> and <code>className</code> attributes are applied directly to the <code>o-input</code>, there is no clean way to customize <code>o-input</code>&rsquo;s <code>label</code>.
     These sorts of one-off problems inevitably turn into bikesheds and generate Frankenstein interfaces because universal (Web) Components must actually meet the unholy union of all product requirements from all the products that use them.
   </p>
   <FieldSet className="fieldset"
     label={<code><img src="fa-triangle.png" style={{ width: 18, height: 18 }} /> http://</code>}>
-      <input className="text-input" type="text" defaultValue="Fancy label"/>
+    <input className="text-input" type="text" defaultValue="Fancy label" />
   </FieldSet>
   <OTextInput label={<code><img src="fa-triangle.png" style={{ width: 18, height: 18 }} /> http://</code>} style={{fontFamily: 'Impact'}} className="hello">
   </OTextInput>
@@ -278,7 +271,7 @@ class List extends React.Component {
     super(props);
     this.state = {
       items: [],
-    }
+    };
     this.input = React.createRef();
     this.add = () => {
       this.setState({
@@ -320,11 +313,11 @@ class OList extends List {
       <button type="button" onClick={this.add}>Add!</button>
       <hr />
       { items.map((item, i) => <OTextInput
-          key={item}
-          label={`Item ${i + 1}`}
-          defaultValue={item}>
-          <button type="button" onClick={() => this.remove(i)}>Remove!</button>
-        </OTextInput>) }
+        key={item}
+        label={`Item ${i + 1}`}
+        defaultValue={item}>
+        <button type="button" onClick={() => this.remove(i)}>Remove!</button>
+      </OTextInput>) }
     </React.Fragment>;
   }
 }
@@ -345,12 +338,11 @@ ReactDOM.render(<React.Fragment>
   <br />
   <Styles />
   <br />
-  {/* <div style={listStyle}>
+  <div style={listStyle}>
     <List />
   </div>
   <div style={listStyle}>
     <OList />
   </div>
-  */}
   <br />
 </React.Fragment>, document.getElementById("root"));

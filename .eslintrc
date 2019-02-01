@@ -2,15 +2,26 @@
   "env": {
     "browser": true,
     "es6": true,
-    "node": true
+    "node": true,
   },
-  "extends": ["eslint-config-floobits", "plugin:react/recommended"],
-  "plugins": [
-    "react"
+  "extends": [
+    "eslint-config-floobits",
+    "plugin:react/recommended",
   ],
+  "plugins": [
+    "react",
+  ],
+  "parserOptions": {
+    "ecmaFeatures": {
+      "jsx": true,
+      "modules": true,
+      "experimentalObjectRestSpread": true,
+    },
+  },
   "rules": {
     "react/no-deprecated": [1],
     "react/no-is-mounted": [1],
+    "react/prop-types": 0,
     "strict": [0],
   },
   "settings": {
