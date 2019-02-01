@@ -15,6 +15,10 @@ class OTextInput extends React.Component {
     };
   }
 
+  focus () {
+    this.input.current.focus();
+  }
+
   get value () {
     return this.input.current.getAttribute('value');
   }
@@ -225,7 +229,7 @@ class Events extends React.Component {
         ref={r => this.oInput = r}
         onClick={e => console.log('WC onClick', e.target)}
         onChange={e => console.log('onChange', e.target)}
-        label="Web component has no `focus` method"
+        label="Web component does not handle `focus`"
       >
         <button type="button" onClick={() => this.oInput.focus()}>focus WC</button>
       </OTextInput>
