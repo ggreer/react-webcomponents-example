@@ -40,6 +40,10 @@ class OTextInput extends React.Component {
   }
 }
 
+const Title = ({ id, children }) => <h1 id={id} className="form--title">
+  <a className="hover" href={`#${id}`}>{ children }</a>
+</h1>;
+
 const FieldSet = ({ label, aside, children }) => <fieldset className="fieldset">
   <div className="fieldset-flex">
     { label && <label className="label">{ label }</label> }
@@ -65,7 +69,7 @@ class Refs extends React.Component {
     const { value, oValue } = this.state;
 
     return <form className="form">
-      <h1 className="form--title">Races and Refs</h1>
+      <Title id="refs">Races and Refs</Title>
       <p>
         In React, user defined <code>Components</code> are instantiated by the framework to create a virtual DOM.
         A <code>ref</code> provides an escape valve to access the realized DOM counterpart of a given component.
@@ -91,41 +95,35 @@ class ControlledInput extends React.Component {
   constructor (props) {
     super(props);
     this.state = {
-      changedBy: '',
+      eventKeys: [''],
       value: "test",
-    };
-    this.random = e => {
-      e.preventDefault();
-      this.setState({
-        changedBy: 'button',
-        value: Math.random().toString(),
-      });
     };
     this.setValue = e => {
       this.setState({
-        changedBy: e.target.name,
+        eventKeys: Object.keys(e),
         value: e.target.value,
       });
     };
   }
 
   render () {
-    const { changedBy, value } = this.state;
+    const { eventKeys, value } = this.state;
     return <form className="form">
-      <h1 className="form--title">Controlled Inputs</h1>
+      <Title id="custom-events">Custom Events</Title>
       <p>
-        In React, <code>value=</code> creates a controlled input - the value is entirely controlled by the Component that renders it.
+        In React, <code>value=</code> creates a <a href="https://reactjs.org/docs/forms.html#controlled-components">controlled input</a> - the value is entirely controlled by the Component that renders it.
         React informs us when a controlled input changes by way of the <a href="https://reactjs.org/docs/handling-events.html"><i>changed</i> event</a>:
       </p>
 
       <blockquote>
         Your event handlers will be passed instances of SyntheticEvent, a cross-browser wrapper around the browser’s native event.
-        It has the same interface as the browser’s native event, including stopPropagation() and preventDefault(), except the events work identically across all browsers.
+        It has the same interface as the browser&#39;s native event, including stopPropagation() and preventDefault(), except the events work identically across all browsers.
         ...React normalizes events so that they have consistent properties across different browsers.
       </blockquote>
 
       <p>
-        The custom event handling for <code>oChange</code> receives the native event because React can not listen to custom events.
+        The React o-input wrapper must manually <code>(addEventListener)</code> bind to the o-change custom event because React does not listen to custom events
+        which bypasses React&#39;s event normilization.
         Options are:
       </p>
       <ol>
@@ -134,14 +132,15 @@ class ControlledInput extends React.Component {
         <li>duplicate reacts event normilization</li>
       </ol>
 
-      <button className="button is-button-primary" onClick={this.random} type="button" style={{ marginBottom: 16 }}>Randomize!</button>
-      <p>Changed by {changedBy}</p>
-      <FieldSet label="Controlled Input:" aside="Can be changed by user.">
+      <FieldSet label="Controlled Input:">
         <input className="text-input" name="native" type="text" value={value} onChange={this.setValue} />
       </FieldSet>
-      <OTextInput label="Web component" name="wc1" value={value} onChange={this.setValue} />
-      <br />
-      <OTextInput label="Web component controlled input that ignores events" name="wc2" value={value} />
+      <OTextInput label="(Controlled) o-input" name="wc1" value={value} onChange={this.setValue} />
+      <p>
+        Keys from change event object:
+        { eventKeys && <br/> }
+        { eventKeys.map(k => <React.Fragment key={k}>{k}<br/></React.Fragment>)}
+      </p>
     </form>;
   }
 }
@@ -156,7 +155,7 @@ class Events extends React.Component {
 
   render () {
     return <form className="form">
-      <h1 className="form--title">Events</h1>
+      <Title>Events</Title>
       <p>
         Most events bubble up from the actual input because we aren&rsquo;t using the shadow dom.
         However, the <code>onChange</code> handler in the wrapper must be bound to the <code>oChange</code> custom event which targets the o-input, (not the actual input).
@@ -227,7 +226,7 @@ class Events extends React.Component {
 }
 
 const Styles = () => <form className="form">
-  <h1 className="form--title">Idiomatic Code, Composition, and Customization</h1>
+  <Title id="styles">Idiomatic Code, Composition, and Customization</Title>
   <p>
     Web Components may only accept string attributes (props) because thats the limition of the DOM.
     React Components can receive any type of data because they only exist in React&rsquo;s virtual DOM.
