@@ -79,7 +79,7 @@ class Refs extends React.Component {
         React&apos;s <a href="https://reactjs.org/docs/refs-and-the-dom.html"><code>ref</code> API</a> provides a way to access the realized DOM counterpart of a given component.
       </p>
       <p>
-        Here, we control the input directly and ask the wrapper what it thinks the value is by way of a <code>ref</code>.
+        In the example below, we control the input directly and use a <code>ref</code> to ask the wrapper what it thinks the value is.
         The ref&apos;s <code>value</code> attribute and our <code>value</code> sometimes differ because of the two way data binding.
       </p>
       <p>
@@ -280,6 +280,9 @@ const Styles = () => <form className="form">
 ReactDOM.render(<React.Fragment>
   <h1 className="form--title">React and Web Components</h1>
   <p>
+    The source code for this page is available at <a href="https://github.com/ggreer/react-webcomponents-example">https://github.com/ggreer/react-webcomponents-example</a>. You can also play around with a <a href="https://codesandbox.io/s/zk3qvm5983">code sandbox</a>.
+  </p>
+  <p>
     This page contains some examples of using the o-text-input web component in React and the issues that arise. General problems are:
   </p>
   <ul>
@@ -287,7 +290,7 @@ ReactDOM.render(<React.Fragment>
     <li>React is designed for one way data binding. Data is passed from parent components to child components. Web Components have their own state which must be synced back up into React-land. Doing this correctly is very difficult.</li>
     <li>React properties can be any sort of data: arrays, objects, strings, functions, other React components. Web component attributes must be strings and their slots must be DOM nodes. Wrapped Web Components will always be second class citizens.</li>
     <li>React normalizes events to have a consistent interface and exposes them as callbacks. This convenience isn&apos;t possible for custom events.</li>
-    <li>Native inputs have a huge interface of properties and methods that both our wrappers and web components would need to duplicate.</li>
+    <li>Native inputs have a huge interface of properties and methods. Both our wrappers and web components would need to duplicate these.</li>
   </ul>
   <p>
     Specific instances of these problems are demonstrated below.
