@@ -6,19 +6,21 @@
 // fieldset component. Wraps inputs in the correct markup & classes for Nim.
 const FieldSet = ({ label, aside, children, error }) => <fieldset className="fieldset">
   <div className={`fieldset-flex ${error ? 'error' : ''}`}>
-    { label && <label className="label">{ label }</label> }
     { children }
+    { label && <label className="label">{ label }</label> }
     { aside && <aside className="form--hint">{ aside }</aside> }
-    { error && <div>{ error }</div>}
+    { error && <aside className="form--hint">{ error }</aside>}
   </div>
 </fieldset>;
 
 /* TextInput component - React counterpart to o-text-input. Uses FieldSet component above.
  * This pattern could be used by other components for checkboxes, selects, etc.
  */
-const TextInput = React.forwardRef(({ label, aside, error, ...otherProps }, ref) => <FieldSet label={label} aside={aside} error={error}>
-  { /* Nim styles data-invalid="false" as red. Work around this by un-setting the attribute. */}
-  <input type="text" className="text-input" data-invalid={error ? true : undefined} ref={ref} {...otherProps} />
+const TextInput = React.forwardRef(({ label, aside, error, required = true, ...otherProps }, ref) => <FieldSet label={label} aside={aside} error={error}>
+  { /* Nim styles data-invalid="false" as red. Work around this by un-setting the attribute.
+     * Nim also adds an "optional" text next to non-required inputs, so default to required.
+     */}
+  <input type="text" className="text-input" data-invalid={error ? true : undefined} ref={ref} required={required} {...otherProps} />
 </FieldSet>);
 
 
@@ -98,16 +100,17 @@ class Refs extends React.Component {
         The ref&apos;s <code>value</code> attribute and our <code>value</code> sometimes differ because of the two way data binding.
       </p>
       <p>
-        It is probably possible to fix this bug in the wrapper, but it was the 3rd or 4th race condition we ran into after a few hours of combined effort.
-        The React equivalent of <code>o-text-input</code> took us about a minute to write.
+        It is probably possible to fix this bug in the wrapper by calling setState and implementing something like <a href="https://www.thinkful.com/projects/understanding-the-digest-cycle-528/">AngularJS&apos;s digest cycle</a>
+        , but it was the 3rd or 4th race condition we ran into after a few hours of combined effort.
+        The React equivalent of <code>o-text-input</code> took us a few minutes to write.
       </p>
-      <TextInput label="Native Input:" aside="Can be changed by user. Always up to date." name="native" value={value} onChange={this.setValue} ref={this.ref} />
-      value from input ref: { this.ref.current && this.ref.current.value }
+      <TextInput label="Native Input" aside="Can be changed by user. Always up to date." name="native" value={value} onChange={this.setValue} ref={this.ref} />
+      Value from input ref: { this.ref.current && this.ref.current.value }
       <br/>
       <br/>
-      <OTextInput label="o-text-input wrapper" name="wc1" value={oValue} onChange={this.setOValue} ref={this.oRef} />
+      <OTextInput label="O-text-input Wrapper" name="wc1" value={oValue} onChange={this.setOValue} ref={this.oRef} explain="Can be changed by user, but ref value lags reality." />
       <br/>
-      value from o-text-input ref: { this.oRef.current && this.oRef.current.value }
+      Value from o-text-input ref: { this.oRef.current && this.oRef.current.value }
     </form>;
   }
 }
@@ -140,7 +143,7 @@ class ControlledInput extends React.Component {
       <blockquote>
         Your event handlers will be passed instances of SyntheticEvent, a cross-browser wrapper around the browser’s native event.
         It has the same interface as the browser&apos;s native event, including <code>stopPropagation()</code> and <code>preventDefault()</code>, except the events work identically across all browsers.
-        ...React normalizes events so that they have consistent properties across different browsers.
+        React normalizes events so that they have consistent properties across different browsers.
       </blockquote>
 
       <p>
@@ -157,7 +160,7 @@ class ControlledInput extends React.Component {
         <li>Do not use Web Components in React.</li>
       </ol>
 
-      <TextInput name="native" value={value} onChange={this.setValue} />
+      <TextInput label="Native Input" name="native" value={value} onChange={this.setValue} />
       <OTextInput label="(Controlled) o-text-input" name="wc1" value={value} onChange={this.setValue} />
       <p>
         Keys from change event:
@@ -167,17 +170,20 @@ class ControlledInput extends React.Component {
     </form>;
   }
 }
-//         In React, passing a <code>value=</code> property to an input creates a <a href="https://reactjs.org/docs/forms.html#controlled-components">controlled input</a>. The value is entirely controlled by the Component that renders it.
-//         React informs us when a controlled input changes by way of the <a href="https://reactjs.org/docs/handling-events.html"><code>onChange</code> event handler</a>:
+// In React, passing a <code>value=</code> property to an input creates a <a href="https://reactjs.org/docs/forms.html#controlled-components">controlled input</a>. The value is entirely controlled by the Component that renders it.
+// React informs us when a controlled input changes by way of the <a href="https://reactjs.org/docs/handling-events.html"><code>onChange</code> event handler</a>:
 class Events extends React.Component {
   constructor (props) {
     super(props);
     this.state = {
-      value: "test",
+      error: null,
     };
+    this.setOValue = e => this.setState({ oValue: e.target.value });
+    this.validate = e => this.setState({ error: (e.target.value || '').endsWith('e') ? undefined : 'Value must end with `e`.'});
   }
 
   render () {
+    const { error } = this.state;
     return <form className="form">
       <Title id="interfaces">Interfaces</Title>
       <p>
@@ -219,7 +225,8 @@ class Events extends React.Component {
         selectionEnd,
         selectionDirection,
         size,
-        tabindex
+        tabindex,
+        data-invalid
       </code>
       <p>
         Besides the ones listed above, there are input-specific methods and several vendor-specific methods/properties potentially used by libraries.
@@ -227,19 +234,27 @@ class Events extends React.Component {
       </p>
       <br />
       <TextInput
-        label="Native Input:"
-        aside={<button type="button" className="button is-button-primary" onClick={() => this.input.focus()}>focus input</button>}
+        label="Native Input"
+        aside={
+          <React.Fragment>
+            Handles `focus`. Shows error if data is invalid. Button is correctly positioned.
+            <br />
+            <br />
+            <button type="button" className="button is-button-primary" onClick={() => this.input.focus()}>Focus input</button>
+          </React.Fragment>
+        }
         ref={r => this.input = r}
         onClick={e => console.log('onClick', e.target)}
-        onChange={e => console.log('onChange', e.target)}
+        onChange={this.validate}
+        error={error}
       />
 
       <OTextInput
         ref={r => this.oInput = r}
         onClick={e => console.log('WC onClick', e.target)}
-        onChange={e => console.log('onChange', e.target)}
-        label="Web component does not handle `focus`"
-      >
+        label="Web component input"
+        explain='Does not handle `focus`. Does not show error if data-invalid="true".'
+        onChange={this.setOValue} data-invalid={error ? true : undefined}>
         <button type="button" onClick={() => this.oInput.focus()}>focus WC</button>
       </OTextInput>
     </form>;
