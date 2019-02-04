@@ -1,5 +1,28 @@
+// import React from "react";
+// import ReactDOM from "react-dom";
+
 /* global React: false, ReactDOM: false */
 
+// fieldset component. Wraps inputs in the correct markup & classes for Nim.
+const FieldSet = ({ label, aside, children, error }) => <fieldset className="fieldset">
+  <div className={`fieldset-flex ${error ? 'error' : ''}`}>
+    { label && <label className="label">{ label }</label> }
+    { children }
+    { aside && <aside className="form--hint">{ aside }</aside> }
+    { error && <div>{ error }</div>}
+  </div>
+</fieldset>;
+
+/* TextInput component - React counterpart to o-text-input. Uses FieldSet component above.
+ * This pattern could be used by other components for checkboxes, selects, etc.
+ */
+const TextInput = React.forwardRef(({ label, aside, error, ...otherProps }, ref) => <FieldSet label={label} aside={aside} error={error}>
+  { /* Nim styles data-invalid="false" as red. Work around this by un-setting the attribute. */}
+  <input type="text" className="text-input" data-invalid={error ? true : undefined} ref={ref} {...otherProps} />
+</FieldSet>);
+
+
+// React wrapper for o-text-input. Very incomplete. Has bugs.
 class OTextInput extends React.Component {
   constructor (props) {
     super(props);
@@ -40,21 +63,13 @@ class OTextInput extends React.Component {
 
   render () {
     const { defaultValue, value, className, ...otherProps } = this.props;
-    return <div><o-text-input class={className} value={value || defaultValue} ref={this.input} {...otherProps}></o-text-input></div>;
+    return <o-text-input class={className} value={value || defaultValue} ref={this.input} {...otherProps}></o-text-input>;
   }
 }
 
 const Title = ({ id, children }) => <h1 id={id} className="form--title">
   <a className="hover" href={`#${id}`}>{ children }</a>
 </h1>;
-
-const FieldSet = ({ label, aside, children }) => <fieldset className="fieldset">
-  <div className="fieldset-flex">
-    { label && <label className="label">{ label }</label> }
-    { children }
-    { aside && <aside className="form--hint">{ aside }</aside> }
-  </div>
-</fieldset>;
 
 class Refs extends React.Component {
   constructor (props) {
@@ -86,9 +101,7 @@ class Refs extends React.Component {
         It is probably possible to fix this bug in the wrapper, but it was the 3rd or 4th race condition we ran into after a few hours of combined effort.
         The React equivalent of <code>o-text-input</code> took us about a minute to write.
       </p>
-      <FieldSet label="Native Input:" aside="Can be changed by user. Always up to date.">
-        <input className="text-input" name="native" type="text" value={value} onChange={this.setValue} ref={this.ref} />
-      </FieldSet>
+      <TextInput label="Native Input:" aside="Can be changed by user. Always up to date." name="native" value={value} onChange={this.setValue} ref={this.ref} />
       value from input ref: { this.ref.current && this.ref.current.value }
       <br/>
       <br/>
@@ -144,9 +157,7 @@ class ControlledInput extends React.Component {
         <li>Do not use Web Components in React.</li>
       </ol>
 
-      <FieldSet label="Controlled Input:">
-        <input className="text-input" name="native" type="text" value={value} onChange={this.setValue} />
-      </FieldSet>
+      <TextInput name="native" value={value} onChange={this.setValue} />
       <OTextInput label="(Controlled) o-text-input" name="wc1" value={value} onChange={this.setValue} />
       <p>
         Keys from change event:
@@ -215,15 +226,13 @@ class Events extends React.Component {
         These missing methods and properties also break the expected interface of <code>inputs</code> accessed via <code>ref</code>s.
       </p>
       <br />
-      <FieldSet
+      <TextInput
         label="Native Input:"
-        aside={<button type="button" className="button is-button-primary" onClick={() => this.input.focus()}>focus input</button>}>
-        <input className="text-input" type="text"
-          ref={r => this.input = r}
-          onClick={e => console.log('onClick', e.target)}
-          onChange={e => console.log('onChange', e.target)}
-        />
-      </FieldSet>
+        aside={<button type="button" className="button is-button-primary" onClick={() => this.input.focus()}>focus input</button>}
+        ref={r => this.input = r}
+        onClick={e => console.log('onClick', e.target)}
+        onChange={e => console.log('onChange', e.target)}
+      />
 
       <OTextInput
         ref={r => this.oInput = r}
@@ -237,45 +246,45 @@ class Events extends React.Component {
   }
 }
 
-const Styles = () => <form className="form">
-  <Title id="styles">Idiomatic Code, Composition, and Customization</Title>
-  <p>
-    Web Components may only accept attributes that are strings.
-    React Components can receive any type of data.
-    In this case, the input&apos;s <code>label</code> is actually a short snippet:
-  </p>
-  <pre>{`const label = <code>
-  <img src="fa-triangle.png" style={{ width: 18, height: 18 }} /> 
-  http://...
-</code>
-...
-<FieldSet label={label} ... />`}</pre>
-  <p>
-    This is a common pattern in React, which strongly prefers composition over other abstractions.
-    Components themselves can be (and commonly are) passed as arguments to other Components, like so:
-  </p>
+const Styles = () => {
+  const label = <code><img src="fa-triangle.png" style={{ width: 18, height: 18 }} /> http://</code>;
+  return <form className="form">
+    <Title id="styles">Idiomatic Code, Composition, and Customization</Title>
+    <p>
+      Web Components may only accept attributes that are strings.
+      React Components can receive any type of data.
+      In this case, the input&apos;s <code>label</code> is actually a short snippet:
+    </p>
+    <pre>{`const label = <code>
+    <img src="fa-triangle.png" style={{ width: 18, height: 18 }} /> 
+    http://...
+  </code>
+  ...
+  <FieldSet label={label} ... />`}</pre>
+    <p>
+      This is a common pattern in React, which strongly prefers composition over other abstractions.
+      Components themselves can be (and commonly are) passed as arguments to other Components, like so:
+    </p>
 
-  <pre>{`const CustomLabel = (props) => <code style={props.style}>
-  <img src="fa-triangle.png" style={{ width: 18, height: 18 }} /> 
-  http://...
-</code>
-...
-<FieldSet label={CustomLabel} ... />`}</pre>
-  <p>
-    This sort of idiomatic interface (Higher Order Components et al) is not possible with slots. Web Components cannot operate on React Components, only the DOM nodes they render.
-    E.g, Web Components can not accept a <i>p tag</i> in a slot.
-    Even something trivial in React (like passing a list of strings to a component) becomes hard.
-  </p>
-  <p>
-    Because React <code>style</code> and <code>className</code> props are applied directly to the <code>o-text-input</code>, there is no clean way to customize <code>o-text-input</code>&apos;s <code>label</code>.
-    These sorts of one-off problems inevitably turn into bikesheds and generate Frankenstein interfaces because universal (Web) Components must satisfy all product requirements from all the products that use them.
-  </p>
-  <FieldSet className="fieldset"
-    label={<code><img src="fa-triangle.png" style={{ width: 18, height: 18 }} /> http://</code>}>
-    <input className="text-input" type="text" defaultValue="Fancy label" />
-  </FieldSet>
-  <OTextInput label={<code><img src="fa-triangle.png" style={{ width: 18, height: 18 }} /> http://</code>} style={{fontFamily: 'Impact'}} className="hello" />
-</form>;
+    <pre>{`const CustomLabel = (props) => <code style={props.style}>
+    <img src="fa-triangle.png" style={{ width: 18, height: 18 }} /> 
+    http://...
+  </code>
+  ...
+  <FieldSet label={CustomLabel} ... />`}</pre>
+    <p>
+      This sort of idiomatic interface (Higher Order Components et al) is not possible with slots. Web Components cannot operate on React Components, only the DOM nodes they render.
+      E.g, Web Components can not accept a <i>p tag</i> in a slot.
+      Even something trivial in React (like passing a list of strings to a component) becomes hard.
+    </p>
+    <p>
+      Because React <code>style</code> and <code>className</code> props are applied directly to the <code>o-text-input</code>, there is no clean way to customize <code>o-text-input</code>&apos;s <code>label</code>.
+      These sorts of one-off problems inevitably turn into bikesheds and generate Frankenstein interfaces because universal (Web) Components must satisfy all product requirements from all the products that use them.
+    </p>
+    <TextInput label={label} style={{fontFamily: 'Impact'}} defaultValue="Component as label. Input with Impact font." />
+    <OTextInput label={label} style={{fontFamily: 'Impact'}} className="hello" defaultValue="Broken label with Impact font. Input with normal font." />
+  </form>;
+};
 
 ReactDOM.render(<React.Fragment>
   <h1 className="form--title">React and Web Components</h1>
